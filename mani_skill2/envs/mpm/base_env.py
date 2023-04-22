@@ -45,7 +45,7 @@ def task(meshes):
         return None
     bbox = trimesh.util.concatenate(meshes).bounds
     length = np.max(bbox[1] - bbox[0])
-    dx = min(0.01, length / 40)  # dx should at most be 0.01
+    dx = min(0.01, length / 80)  # dx should at most be 0.01
     margin = max(
         dx * 3, 0.01
     )  # margin should be greater than 3 dx and at least be 0.01
@@ -65,7 +65,6 @@ class MPMBaseEnv(BaseEnv):
         max_particles=65536,
         **kwargs,
     ):
-
         if not os.path.isfile(dll):
 
             class ARGS:
@@ -205,7 +204,7 @@ class MPMBaseEnv(BaseEnv):
             with Pool(8) as p:
                 sdfs = list(
                     tqdm.tqdm(
-                        p.imap(task, actor_meshes),
+                        p.map(task, actor_meshes),
                         total=len(actor_meshes),
                     )
                 )
