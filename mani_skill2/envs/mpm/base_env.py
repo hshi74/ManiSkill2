@@ -198,16 +198,11 @@ class MPMBaseEnv(BaseEnv):
 
         if sdfs is None:
             import tqdm
-            from multiprocessing import Pool
 
             print("generating cached SDF volumes")
-            with Pool(8) as p:
-                sdfs = list(
-                    tqdm.tqdm(
-                        p.map(task, actor_meshes),
-                        total=len(actor_meshes),
-                    )
-                )
+            sdfs = []
+            for meshes in tqdm.tqdm(actor_meshes):
+                sdfs.append(task(meshes))
 
             with open(self.sdf_cache, "wb") as f:
                 meshes = [

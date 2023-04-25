@@ -104,6 +104,11 @@ def trimesh2sdf(meshes, margin, dx, bbox=None):
         query = trimesh.proximity.ProximityQuery(mesh)
         sdf = query.signed_distance(points) * -1.0
 
+        # from pysdf import SDF
+
+        # f = SDF(mesh.vertices, mesh.faces)
+        # sdf = f(points) * -1.0
+
         surface_points, _, tri_id = query.on_surface(points)
         face_normal = mesh.face_normals[tri_id]
         normal = (points - surface_points) * np.sign(sdf)[..., None]
