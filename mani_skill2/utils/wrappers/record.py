@@ -132,18 +132,21 @@ class RecordEpisode(gym.Wrapper):
             )
 
         self.save_video = save_video
+        if self.save_video:
+            self._vid_name = f"{trajectory_name}"
+
         self.info_on_video = info_on_video
         self.render_mode = render_mode
         self._render_images = []
 
         # Avoid circular import
-        from mani_skill2.envs.mpm.base_env import MPMBaseEnv
+        # from mani_skill2.envs.mpm.base_env import MPMBaseEnv
 
-        if isinstance(env.unwrapped, MPMBaseEnv):
-            self.init_state_only = True
-            logger.info("Soft-body (MPM) environment detected, record init_state only")
-        else:
-            self.init_state_only = False
+        # if isinstance(env.unwrapped, MPMBaseEnv):
+        #     self.init_state_only = True
+        #     logger.info("Soft-body (MPM) environment detected, record init_state only")
+        # else:
+        self.init_state_only = False
 
     def reset(self, **kwargs):
         if self.save_on_reset and self._episode_id >= 0:
@@ -303,7 +306,7 @@ class RecordEpisode(gym.Wrapper):
         if ignore_empty_transition and len(self._render_images) == 1:
             return
 
-        video_name = "{}".format(self._episode_id)
+        video_name = f"{self._vid_name}_{self._episode_id}"
         if suffix:
             video_name += "_" + suffix
         images_to_video(

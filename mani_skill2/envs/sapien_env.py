@@ -204,7 +204,7 @@ class BaseEnv(gym.Env):
         self._agent_camera_cfgs = OrderedDict()
         if self._agent_cfg is not None:
             self._agent_camera_cfgs = parse_camera_cfgs(self._agent_cfg.cameras)
-            self._camera_cfgs.update(self._agent_camera_cfgs)
+            # self._camera_cfgs.update(self._agent_camera_cfgs)
 
     def _register_cameras(
         self,
